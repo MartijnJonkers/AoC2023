@@ -2,25 +2,18 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 import aoc
 
-input = [
-  "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53",
-  "Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19",
-  "Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1",
-  "Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83",
-  "Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36",
-  "Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"
-]
-lines = input
-
-# get lines and add a '.' perimeter
+# get list of 2 list of seperated number per line
 lines = aoc.loadlines(discard_empty_lines=True)
+cards =[[part.strip().split(' ') for part in line.replace("  ", " ").split(':')[1].split('|')] for line in lines]
 
-cards =[[[int(num) for num in part.strip().split(' ')] for part in line.replace("  ", " ").split(':')[1].split('|')] for line in lines]
-
+num_cards = [1 for _ in range(0,len(cards))]              # part 2: prepare number of cards list (1 each)
 part1_sum = 0
-for card in cards:
-  matches = set(card[0]) & set(card[1])
-  if( len(matches) > 0 ):
-    part1_sum = part1_sum + pow(2,len(matches)-1)
+for i in range(0, len(cards)):
+  matches = len(set(cards[i][0]) & set(cards[i][1]))      # get nr of overlapping entries
+  if( matches > 0 ):
+    part1_sum = part1_sum + pow(2,matches-1)              # part 1
+  for j in range(1, matches+1):
+    num_cards[i+j] = num_cards[i+j] + num_cards[i]        # part 2
+part2_sum = sum(num_cards)
 
-aoc.result(part1_sum, "")
+aoc.result(part1_sum, part2_sum)
