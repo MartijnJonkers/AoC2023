@@ -16,4 +16,7 @@ for i in range(0, len(cards)):
     num_cards[i+j] = num_cards[i+j] + num_cards[i]        # part 2
 part2_sum = sum(num_cards)
 
-aoc.result(part1_sum, part2_sum)
+print(part1_sum)
+print(part2_sum)
+
+#aoc.result(part1_sum, part2_sum)
