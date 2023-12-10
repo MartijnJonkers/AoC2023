@@ -15,3 +15,14 @@ def result(p1 = "", p2 = ""):
     print("part 1 =", p1)
   if( len(str(p2)) > 0 ):
     print("part 2 =", p2)
+
+# Greatest Common Divisor
+def gcd(a, b):
+  if (a == 0):
+    return b
+  return gcd(b % a, a)
+
+# Lowest Common Multiple
+def lcm(a, b):
+  return (a / gcd(a, b)) * b
+
