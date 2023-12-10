@@ -26,9 +26,9 @@ def gcd(a, b):
 def lcm(a, b):
   return (a / gcd(a, b)) * b
 
-def add_perimeter( char , lines):
-  lines = [char + line + char for line in lines]
-  lines.insert(0, char * len(lines[0]))
-  lines.append(char * len(lines[0]))
+def add_perimeter( char , lines, as_list = True):
+  lines = [list(char + line + char) if as_list else char + line + char for line in lines]
+  lines.insert(0, list(char * len(lines[0])) if as_list else char * len(lines[0]))
+  lines.append(list(char * len(lines[0])) if as_list else char * len(lines[0]))
   return lines
 
