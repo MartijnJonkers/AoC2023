@@ -11,8 +11,7 @@ curr_y,curr_x = start_y-1,start_x   # first step
 steps = 0
 
 dir = 'up'
-line_chars = []
-line_chars.append({'Y':start_y,'X':start_x,'Dir':dir,'Char':'|'}) # S = '|'
+line_chars = [{'Y':start_y,'X':start_x,'Dir':dir,'Char':'|'}]# S = '|'
 while curr_y != start_y or curr_x != start_x:
 
   # count steps (part1)
