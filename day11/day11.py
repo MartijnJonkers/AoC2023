@@ -6,37 +6,42 @@ import aoc
 file = "input.txt"
 lines = aoc.loadlines(file=file, discard_empty_lines=True)
 
-# expand
-expand_column = [1 for _ in range(0, len(lines[0]))]
-expanded = lines.copy()
-added = 0
+#EXPANSION = 1         # part 1
+EXPANSION = 1000000-1 # part 2
+
+# create lists to keep track of expanded rows and columns (assume all expanded at first)
+expand_column = [True for _ in range(0, len(lines[0]))]
+expand_row = [True for _ in range(0, len(lines))]
+
+# go over all data and determine the expansion
 for y in range(0, len(lines)):
-  if '#' not in lines[y]:
-    expanded.insert(added + y, lines[y])
-    added = added + 1
+  expand_row[y] = False if '#' in lines[y] else expand_row[y]             # check row expansion
   for x in range(0, len(lines[y])):
-    expand_column[x] = 0 if lines[y][x] == '#' else expand_column[x]
+    expand_column[x] = False if lines[y][x] == '#' else expand_column[x]  # check column expansion
 
-offset = 0
-for i in range(0, len(expand_column)):
-  if expand_column[i]:
-    for y in  range(0, len(expanded)):
-      row = list(expanded[y])
-      row.insert(i+offset, '.')
-      expanded[y] = "".join(row)
-    offset = offset + 1
-
+offset = {'X':0,'Y':0}
+result = 0
 galaxies = []
-for y in range(0, len(expanded)):
-  for x in range(0, len(expanded[y])):
-    if expanded[y][x] == '#':
-      galaxies.append({"X":x,"Y":y})
+for y in range(0, len(lines)):
+  
+  if expand_row[y]:
+    offset['Y'] = offset['Y'] + EXPANSION     # determine current row offset
 
-part1 = 0
-for start in range(0, len(galaxies)-1):
-  for end in range(start+1, len(galaxies)):
-    x = abs( (galaxies[end]['X'])-(galaxies[start]['X']) )
-    y = abs( (galaxies[end]['Y'])-(galaxies[start]['Y']) )
-    part1 = part1 + y + x
+  offset['X'] = 0
+  for x in range(0, len(lines[y])):
 
-aoc.result(part1) # 3304176 too low
+    if expand_column[x]:
+      offset['X'] = offset['X'] + EXPANSION   # determine current column offset
+    
+    # is it a new galaxy?
+    if lines[y][x] == '#':
+      new = {"X":x+offset['X'],"Y":y+offset['Y']}
+
+      # compute length to al already known galaxies
+      for old in galaxies:
+        result = result + abs( old['X']-new['X'] ) +  abs( old['Y']-new['Y'] )
+
+      # add new one to the list
+      galaxies.append(new)
+
+aoc.result(result)
