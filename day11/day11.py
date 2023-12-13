@@ -13,11 +13,12 @@ EXPANSION = 1000000-1 # part 2
 expand_column = [True for _ in range(0, len(lines[0]))]
 expand_row = [True for _ in range(0, len(lines))]
 
-# go over all data and determine the expansion
+# go over all data and determine the expansion per row and column
 for y in range(0, len(lines)):
-  expand_row[y] = False if '#' in lines[y] else expand_row[y]             # check row expansion
   for x in range(0, len(lines[y])):
-    expand_column[x] = False if lines[y][x] == '#' else expand_column[x]  # check column expansion
+    if lines[y][x] == '#':
+      expand_row[y] = False 
+      expand_column[x] = False
 
 offset = {'X':0,'Y':0}
 result = 0
