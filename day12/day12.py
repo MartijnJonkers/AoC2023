@@ -2,8 +2,8 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 import aoc
 
-#file = "example.txt"
-file = "input.txt"
+file = "example.txt"
+#file = "input.txt"
 lines = aoc.loadlines(file=file, discard_empty_lines=True)
 
 def check(line, groups, matches):
@@ -41,7 +41,7 @@ def run_part():
     line[0][0] = "." + line[0][0] + "."
     matches = check(list(line[0][0]), [int(n) for n in line[1]] , matches)
     c = c+1
-    print(c,'/',len(lines))
+    print( c, '/', len(lines), '-', matches )
 
   aoc.result(matches)
 
