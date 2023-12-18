@@ -2,35 +2,26 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 import aoc
 
-#file = "example.txt"
-file = "input.txt"
-blocks = [[l for l in block.split('\n') if len(l.strip())>0] for block in aoc.read(file=file).split('\n\n')]
+part = 2
+blocks = [block.split('\n') for block in aoc.read().strip().split('\n\n')]
 
 def run_block(block):
-  if '###...#...#.#..' in block[0]:
-  #if '#' in block[0]:
-    pass
-  for factor in [100,1]:
-    for y in range(1, len(block)):
-      l = min(len(block) - y, y)
-      above = block[y-l: y]
-      below = block[y: y+l]
-      above.reverse()
-      # for i in range(2, len(above)):
-      #   if( "".join(above[0:i]) == "".join(below[0:i]) ):
-      #     return (y+1) * factor
-      
-      if( "".join(above) == "".join(below) ):
-        return y * factor
+  for factor in [100,1]:                          # first time top down, second time left right
+    for y in range(1, len(block)):                  # go over all rows
+      l = min(len(block) - y, y)                      # determin shortest steps to top or bottom
+      above = block[y-l: y][::-1]                       # get rows above a line, reversed
+      below = block[y: y+l]                             # get rows below a line
+      if part == 1:                                     # part 1:
+        if( above == below):                              # check above and below are the same
+          return y * factor                                 # they are the same
+      elif part == 2:                                   # part 2:
+        ab = zip("".join(above), "".join(below))          # combine
+        diffs = [1 for a,b in ab if a != b]               # get the diffs at index
+        if( len(diffs) == 1 ):                            # check 1 diff
+          return y * factor                                 # exactly 1 diff found, so must be smutge
+    block = ["".join(line) for line in list(zip(*block[::-1]))] # rotate the block 90 degrees and run again
 
-    # do it again but now rotated 90 degrees
-    org = block.copy()
-    block = list(zip(*block[::-1]))
-    block = ["".join(line) for line in block]
-  #return 0
-
-part1 = 0
+result = 0
 for block in blocks:
-  part1 = part1 + run_block(block.copy())
-
-aoc.result(part1)
+  result = result + run_block(block)   # compute result by adding up all results
+aoc.result(result)
